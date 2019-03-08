@@ -1,7 +1,6 @@
-Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow. 
-NOTEL:Will only append testbenches or modify files if they do not exist already. 
+Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow. This script was developed with the Unversity of Washington curriculum in mind but can be used for most SystemVerilog files.
 
-This script was developed with the Unversity of Washington curriculum in mind but can be used for most SystemVerilog files.
+NOTE: Will only append testbenches or modify files if they do not exist already. 
 
 How to use:
 1. Terminal: python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no files listed runs *.sv files)
