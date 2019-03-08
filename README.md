@@ -2,7 +2,7 @@ Accelerates the development of SystemVerilog modules by automating the testbench
 
 ![alt text](https://i.imgur.com/ciBfiUf.png)
 
-NOTE: Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script.  
+NOTE: These scripts make some assumptions about synax of module declarations. Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script.  
 
 How to use:
 1. open terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
