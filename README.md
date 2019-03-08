@@ -14,7 +14,6 @@ Sytnax: These scripts make some assumptions about synax of module declarations. 
     .
     .
     .
-
   endmodule 
 ```
 
