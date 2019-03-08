@@ -155,13 +155,6 @@ def createModuleDictionary():
     return modules_with_submodules
 
 
-def createRunlabFileVlogs(modules):
-    result = ""
-    for module in modules:
-        result = result + "vlog \"./" + module + ".sv\"\n"
-    return result
-
-
 def hasFile(filename):
     return os.path.isfile(filename)
 
@@ -215,6 +208,14 @@ def addFileToProject(filename, type, target):
     f.write(contents)
     f.close()
 
+
+def createRunlabFileVlogs(modules):
+    result = ""
+    for module in modules:
+        result = result + "vlog \"./" + module + ".sv\"\n"
+    return result
+
+
 def createRunlabFile(module):
     filename = "runlab_" + module + ".do"
     if hasFile(filename):
@@ -222,7 +223,8 @@ def createRunlabFile(module):
     else:
         printSuccessMessage(filename)
         f = open(filename, "w")
-        vlog = createRunlabFileVlogs(module)
+        submodules = getModuleImplictSubmodules(module + ".sv")
+        vlog = createRunlabFileVlogs(submodules)
         f.write("# File generated using scripted created by Allen Putich."
                 "# "
                 "# Runlab format was adopted from Scott Hauck UW EE 271 course files.\n"
@@ -308,7 +310,7 @@ def printSuccessMessage(name):
 
 
 def printContributeMessage ():
-    print ("Thanks for using this script! :)")
+    print ("Thanks for using this script :)")
 
 
 #MAIN ------------------------------------------------------------------------
