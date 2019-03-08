@@ -4,4 +4,4 @@ This script was developed with the Unversity of Washington curriculum in mind bu
 
 How to use:
 1. Terminal: python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no files listed runs *.sv files)
-2. Most UW computers do not have python easily available through terminal so must Right click script -> open with - > python (usually located at C:\ProgramData\Anaconda3\python.exe)
+2. Run as: Most UW computers do not have python easily available through terminal so must Right click script -> open with - > python (usually located at C:\ProgramData\Anaconda3\python.exe)
