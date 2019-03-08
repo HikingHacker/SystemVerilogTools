@@ -59,6 +59,7 @@ parameterTestbenchConversion =	{
 # input/output/inout .....
 # endmoule
 
+# TODO: correct sytnax so end of line character is proper. possibliy replace commas with ; if necessary.
 def getModulePorts(filename):
     parameters = []
     with open(filename, 'r') as f:
@@ -136,8 +137,9 @@ def createTestbench(filename, module):
         f.write("module " + module + "_testbench();\n")
         for parameter in getModulePorts(filename):
             f.write("\t" + parameter.strip() + "\n")
-        f.write("\n\t// always #5 clk = ~clk; // Setup clock logic here if necessary\n")
-        f.write("\n\t" + module + " dut (.*); // \".*\" Connects ports to variables with matching names\n")
+        f.write(createTestbenchClock())
+        f.write("\n\t" + module + " dut (.*); // \".*\" Implicitly connects all ports "
+                                  "to variables with matching names\n")
         f.write("\n\tinitial begin\n")
         f.write("\n\t\trepeat (10) @(posedge clk);")
         f.write("\n\t\t$stop; // End simulation")
@@ -284,6 +286,15 @@ def printScriptHeader():
     print("|       https://github.com/HalfDressed/VerilogScripts        |")
     print(" ------------------------------------------------------------ ")
 
+def createTestbenchClock():
+    clockInstantiation = ("\n\t// Set up the clock."
+                          "\n\tparameter PERIOD = 100; // period = length of clock"
+                          "\n\tinitial begin"
+                          "\n\t\tclk <= 0;"
+                          "\n\t\tforever #(PERIOD/2) clk = ~clk;"
+                          "\n\tend\n")
+
+    return clockInstantiation
 
 def createWorkFlowScripts():
     print ("Create workflow scripts:")
@@ -312,7 +323,7 @@ def printSuccessMessage(name):
 
 
 def printContributeMessage ():
-    print ("Thanks for using this script :)")
+    print("Thanks for using this script :)")
 
 
 #MAIN ------------------------------------------------------------------------
@@ -327,5 +338,5 @@ if (len(sys.argv) > 1):
 else:
     for file in glob.glob('*.sv'):
         createTestingSuite(file)
-print() #additonal line
+print("") # additional line for spacing
 printContributeMessage()
