@@ -1,4 +1,5 @@
-Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow.
+Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow. 
+NOTEL:Will only append testbenches or modify files if they do not exist already. 
 
 This script was developed with the Unversity of Washington curriculum in mind but can be used for most SystemVerilog files.
 
