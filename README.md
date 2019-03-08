@@ -5,7 +5,7 @@ Accelerates the development of SystemVerilog modules by automating the testbench
 
 # Guidelines
 Sytnax: These scripts make some assumptions about synax of module declarations. Will work on others but the below is reccomended
-
+```verilog
   module NAME(PORT, PORT, PORT, .... ); 
     output logic [6:0] PORT, ....;
     input logic [3:0] PORT;
@@ -16,6 +16,7 @@ Sytnax: These scripts make some assumptions about synax of module declarations. 
     .
 
   endmodule 
+```
 
 NOTE: Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script.  
 
