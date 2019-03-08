@@ -143,6 +143,8 @@ def createTestbench(filename, module):
         f.write("\n\t\t$stop; // End simulation")
         f.write("\n\tend")
         f.write("\nendmodule")
+        f.write("\n*/")
+
         f.close()
 
 
@@ -264,7 +266,7 @@ def createWaveFile(module):
     if hasFile(filename):
         printErrorMessage(filename)
     else:
-        printSuccessMessage(filename + "(empty)")
+        printSuccessMessage(filename)
         f = open(filename, "w")
 
 
