@@ -29,12 +29,12 @@ Sytnax: These scripts make some assumptions about synax of module declarations. 
 
 ```sh
 Terminal:
-mv ./AccelerateSystemVerilogTesting [working directory]
-python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no files listed runs *.sv files)
+1. mv ./AccelerateSystemVerilogTesting [working directory]
+2. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no files listed runs *.sv files)
 ```
   
 ```sh
-Executible (most UW computers don't have python easily accessible through terminal):
-Move file to working directory.
-Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
+1. Executible (most UW computers don't have python easily accessible through terminal):
+2. Move file to working directory.
+3. Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
 ```
