@@ -30,7 +30,7 @@ Sytnax: These scripts make some assumptions about synax of module declarations. 
 ```sh
 Terminal:
 1. mv ./AccelerateSystemVerilogTesting [working directory]
-2. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no files listed runs *.sv files)
+2. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no parameters given runs on *.sv files in directory)
 ```
   
 ```sh
