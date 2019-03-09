@@ -1,8 +1,8 @@
 # Overview
-Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow. This script was developed with the Unversity of Washington curriculum in mind but can be used for most SystemVerilog files.
+These scripts accelerate the development of SystemVerilog modules by automating a majority of the testbench, runlab and wave file development workflow. This script was developed with the Unversity of Washington curriculum (DE1_SoC FPGA Board & ModelSim) in mind but is compatible with any SystemVerilog files that follow the guidelines.
 
 # Guidelines
-1. These scripts make strict* assumptions about syntac of module declartions and their file structure. Currently, they have a strict 1 module per file requirement. Each MODULE_NAME module must exist in a file called MODULE_NAME.sv for correct testbench and .do file creation. Testbenches must be named MODULE_NAME_testbench() for correct detection and runlab creation. 
+1. These scripts make strict* assumptions about syntax of module declartions and their file structure. Currently, they have a strict 1 module per file requirement. Each MODULE_NAME module must exist in a file called MODULE_NAME.sv for correct testbench and .do file creation. All manual created testbenches must be named MODULE_NAME_testbench() for correct detection and runlab creation. 
 
 ```verilog
   // Suggested Syntax for module and port declartion:
