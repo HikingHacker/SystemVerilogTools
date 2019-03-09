@@ -1,26 +1,25 @@
 # Overview
 Accelerates the development of SystemVerilog modules by automating the testbench, runlab and wave file development workflow. This script was developed with the Unversity of Washington curriculum in mind but can be used for most SystemVerilog files.
 
-![alt text](https://i.imgur.com/ciBfiUf.png)
-
 # Guidelines
-Sytnax: These scripts make some assumptions about synax of module declarations. Will work on other styles but the below is recommend for the best experience. Other styles could require minimal editing of generated files to work or completely fail. 
+1. These scripts make strict* assumptions about syntac of module declartions and their file structure. Currently, they have a strict 1 module per file requirement. Each MODULE_NAME module must exist in a file called MODULE_NAME.sv for correct testbench and .do file creation. Testbenches must be named MODULE_NAME_testbench() for correct detection and runlab creation. 
 
 ```verilog
+  // Suggested Syntax for module and port declartion:
   module NAME(PORT, PORT, PORT, .... ); 
-    output logic [6:0] PORT, ....;
     input logic [3:0] PORT;
-    input logic [9:0] PORT;
-    tri logic [9:0] Port;
+    inout logic [9:0] PORT;
+    output logic [6:0] PORT, ....;
     .
+    . // logic
     .
-    .
-  endmodule 
+  endmodule
+ 
+  // Suggested Syntax for module and port instantiation:
+  module NAME (.PORT1(PORTA), .PORT2(PORTB), .... ); 
+  
 ```
-
-# Notes
-1. The script currently has strict 1 module per file requirement. Each MODULE_NAME must exist in a file called MODULE_NAME.sv for the testbench and .do file creation to work properly. Testbenches must be named MODULE_NAME_testbench() for proper dection and runlab execution.
-2. Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script.  
+2. Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script. 
 
 # How to use:
 1. open terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
@@ -38,3 +37,6 @@ Terminal:
 2. Move file to working directory.
 3. Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
 ```
+
+# Examples
+![alt text](https://i.imgur.com/ciBfiUf.png)
