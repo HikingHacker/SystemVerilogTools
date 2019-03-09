@@ -19,7 +19,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
   module NAME (.PORT1(PORTA), .PORT2(PORTB), .... ); 
   
 ```
-2. Will only append testbenches or create files if they do not exist already. This was enforced to not override user changes to files and stop duplicates on multiple executions of the script. 
+2. Only appends testbenches or create .do files if they do not exist already. This was enforced to prevent overriding user changes to files and stop duplicates on multiple executions of the script. If you would like to use the scripts to generate these files please delete the testbench code and do files. 
 
 # How to use:
 1. open terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
