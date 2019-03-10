@@ -197,7 +197,8 @@ def createLaunchModelSimFile():
     else:
         printSuccessMessage("Launch_ModelSim.bat (ensure correct path)")
         f = open(filename, "w")
-        contents = "C:\intelFPGA\\17.0\modelsim_ase\win32aloem\modelsim.exe"
+        contents = "C:\intelFPGA\\17.0\modelsim_ase\win32aloem\modelsim.exe\n"
+                   "C:\intelFPGA_lite\\17.0\modelsim_ase\win32aloem\modelsim.exe
         f.write(contents)
         f.close()
 
