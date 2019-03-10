@@ -24,18 +24,18 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 # How to use:
 1. open Git Bash or Terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
 2. Move the AccelerateSystemVerilogTesting.py script into the directory with .sv files you want to run it on.
-3. Run the script:
+3. Run the script using the instructions below
+
+```sh
+Executible (most UW computers don't have python easily accessible through terminal):
+1. Move file to working directory.
+2. Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
+```
 
 ```sh
 Terminal:
 1. mv ./AccelerateSystemVerilogTesting [working directory]
 2. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no parameters given runs on *.sv files in directory)
-```
-  
-```sh
-1. Executible (most UW computers don't have python easily accessible through terminal):
-2. Move file to working directory.
-3. Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
 ```
 
 # Examples
