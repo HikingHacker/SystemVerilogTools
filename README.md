@@ -23,7 +23,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 
 # How to use:
 1. open Git Bash or Terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
-2. Move the script into the directory with .sv files you want to run it on.
+2. Move the AccelerateSystemVerilogTesting.py script into the directory with .sv files you want to run it on.
 3. Run the script:
 
 ```sh
