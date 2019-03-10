@@ -339,5 +339,4 @@ else:
     for file in glob.glob('*.sv'):
         createTestingSuite(file)
 print("") # additional line for spacing
-printContributeMessage()
 input('Press ENTER to exit')
