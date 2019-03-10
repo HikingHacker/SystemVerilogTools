@@ -22,7 +22,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 2. Only appends testbenches or create .do files if they do not exist already. This was enforced to prevent overriding user changes to files and stop duplicates on multiple executions of the script. If you would like to use the scripts to generate these files please delete the testbench code and do files. 
 
 # How to use:
-1. open terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
+1. open Git Bash or Terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
 2. Move the script into the directory with .sv files you want to run it on.
 3. Run the script:
 
