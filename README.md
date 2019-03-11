@@ -15,7 +15,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
     .
   endmodule
  
-  // Suggested Syntax for module and port instantiation:
+  // Suggested Syntax for module instantiation:
   module NAME (.PORT1(PORTA), .PORT2(PORTB), .... ); 
   
 ```
