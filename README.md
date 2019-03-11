@@ -15,28 +15,33 @@ These scripts accelerate the development of SystemVerilog modules by automating 
     .
   endmodule
  
-  // Suggested Syntax for module and port instantiation:
+  // Suggested Syntax for module instantiation:
   module NAME (.PORT1(PORTA), .PORT2(PORTB), .... ); 
   
 ```
 2. Only appends testbenches or create .do files if they do not exist already. This was enforced to prevent overriding user changes to files and stop duplicates on multiple executions of the script. If you would like to use the scripts to generate these files please delete the testbench code and do files. 
 
 # How to use:
-1. open Git Bash or Terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
-2. Move the AccelerateSystemVerilogTesting.py script into the directory with .sv files you want to run it on.
-3. Run the script using the instructions below
+1. Open Git Bash or Terminal and run "git clone https://github.com/HalfDressed/VerilogScripts.git"
+2. Copy the AccelerateSystemVerilogTesting.py script into the directory with .sv files you want to run it on.
+3. Run the script using one of the methods below.
 
 ```sh
 Executible (most UW computers don't have python easily accessible through terminal):
-1. Move file to working directory.
-2. Right click script -> open with - > python (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\python.exe)
+1. Right click script -> open with - > python.exe (usually located in the install directory of Spyder at C:\ProgramData\Anaconda3\)
+2. Launch script (will run on every .sv in directory)
 ```
 
 ```sh
 Terminal:
-1. mv ./AccelerateSystemVerilogTesting [working directory]
-2. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no parameters given runs on *.sv files in directory)
+1. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no parameters given runs on *.sv files in directory)
 ```
 
 # Examples
 ![alt text](https://i.imgur.com/ciBfiUf.png)
+
+# TODO list
+1. Add automatic variable popluation to wave.do file
+2. Improve automated testbench creation for other syntax styles
+3. Allow users to specify files through python script like available through terminal
+
