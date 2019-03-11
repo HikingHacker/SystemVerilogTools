@@ -329,7 +329,6 @@ def printContributeMessage ():
 #MAIN ------------------------------------------------------------------------
 printScriptHeader()
 createWorkFlowScripts()
-
 # Process all arguments given to script OR every .sv file in directory
 if (len(sys.argv) > 1):
     for arg in range(len(sys.argv)):
@@ -339,4 +338,4 @@ else:
     for file in glob.glob('*.sv'):
         createTestingSuite(file)
 print("") # additional line for spacing
-input('Press ENTER to exit')
+input('Press ENTER to exit...')
