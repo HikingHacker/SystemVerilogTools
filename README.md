@@ -6,7 +6,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 
 ```verilog
   // Suggested Syntax for module and port declartion:
-  module NAME(PORT, PORT, PORT, .... ); 
+  module NAME (PORT, PORT, PORT, .... ); 
     input logic [3:0] PORT;
     inout logic [9:0] PORT;
     output logic [6:0] PORT, ....;
