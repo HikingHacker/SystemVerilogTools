@@ -42,6 +42,8 @@ Terminal:
 
 # TODO list
 1. Add automatic variable popluation to wave.do file
-2. Improve automated testbench creation for other syntax styles
+2. Improve automated testbench creation for other syntax styles (universality)
 3. Allow users to specify files through python script like available through terminal
+4. Add more common modelsim install directories to Launch_Modelsim.bat
+5. Add config file
 
