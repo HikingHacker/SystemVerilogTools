@@ -21,7 +21,7 @@ __maintainer__ = "Allen Putich"
 __email__ = "allen.putich@gmail.com"
 __status__ = "BETA"
 
-debug = False;
+debug = False
 
 def debugPrint(obj):
     if debug:
