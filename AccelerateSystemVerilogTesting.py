@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import re
 import sys
@@ -21,7 +21,7 @@ __maintainer__ = "Allen Putich"
 __email__ = "allen.putich@gmail.com"
 __status__ = "BETA"
 
-debug = 0;
+debug = False;
 
 def debugPrint(obj):
     if debug:
@@ -45,8 +45,8 @@ def getModuleDeclarations(filename):
                         break
     return list(set(modules))
 
-
-parameterTestbenchConversion =	{
+# Dictionary containing variable conversion between module and testbench domain
+parameterTestbenchConversion = {
   "input": "",
   "output": "",
   "inout logic": "tri"
@@ -59,31 +59,35 @@ parameterTestbenchConversion =	{
 # input/output/inout .....
 # endmoule
 
-# TODO: correct sytnax so end of line character is proper. possibliy replace commas with ; if necessary.
 def getModulePorts(filename):
     parameters = []
     with open(filename, 'r') as f:
         for line in f:
-            if 'input' in line:
-                parameters.append((re.sub('input', '', line)).strip('\n'))
-            if 'output' in line:
-                parameters.append((re.sub('output', '', line)).strip('\n'))
-            if 'inout' in line:
-                parameters.append((re.sub('inout logic', 'tri', line)).strip('\n'))
+            line = line.strip('\n,;:') + ";"
             if 'endmodule' in line:
                 break
-    return list(set(parameters))
+            for variable in parameterTestbenchConversion.keys():
+                if variable in line:
+                    parameters.append((re.sub(variable, parameterTestbenchConversion[variable], line)).strip('\n'))
+    return list(parameters)
 
 
 # TODO: Returns ports for specific module in file with legal SystemVerilog Syntax.
 def getSpecificModulePorts(filename, module):
-    print("getModuleParameters_fancy")
     parameters = []
-    parameter = ""
-    f = open(filename, 'r')
-    lines = f.readlines()
-    for line_number in range(len(lines)):
-        print("getModuleParameters_fancy")
+    withinModule = False
+    with open(filename, 'r') as f:
+        for line in f:
+            if 'module ' + module in line:
+                withinModule = True
+            if withinModule:
+                line = line.strip('\n,;:') + ";"
+                if 'endmodule' in line:
+                    break
+                for variable in parameterTestbenchConversion.keys():
+                    if variable in line:
+                        parameters.append((re.sub(variable, parameterTestbenchConversion[variable], line)).strip('\n'))
+    return list(parameters)
 
 
 # Returns all submodules used in file that are declared in current directory
@@ -126,18 +130,20 @@ def hasTestbench(filename, module):
     return False
 
 
+# add matching clk functionality
 def createTestbench(filename, module):
+    getClockName(filename, module)
     if hasTestbench(filename, module):
         printErrorMessage(module + "_testbench")
     else:
-        printSuccessMessage(filename)
+        printSuccessMessage(module + "_testbench")
         f = open(filename, "a+")
         f.write("\n\n")
-        f.write("/*\n")
-        f.write("module " + module + "_testbench();\n")
-        for parameter in getModulePorts(filename):
+        f.write("/*\n") # commented to prevent conflicts
+        f.write("module " + module + "_testbench(); // Required name for runlab script\n")
+        for parameter in getSpecificModulePorts(filename, module):
             f.write("\t" + parameter.strip() + "\n")
-        f.write(createTestbenchClock())
+        f.write(createTestbenchClock(filename, module))
         f.write("\n\t" + module + " dut (.*); // \".*\" Implicitly connects all ports "
                                   "to variables with matching names\n")
         f.write("\n\tinitial begin\n")
@@ -146,8 +152,38 @@ def createTestbench(filename, module):
         f.write("\n\tend")
         f.write("\nendmodule")
         f.write("\n*/")
-
         f.close()
+
+
+# Finds first clock uses in module
+commonClocks = ["clock", "clk", "CLOCK_50"]
+def getClockName (filename, module):
+    errorMessage = "CLOCK_NOT_FOUND"
+    with open(filename, 'r') as f:
+        withinModule = False
+        for line in f:
+            if 'module ' + module in line:
+                withinModule = True
+            if withinModule:
+                for word in line.split():
+                    word = word.strip('\n,;:')
+                    for clock in commonClocks:
+                        if word.lower() == clock.lower():
+                            return word
+                    if word == 'endmodule':
+                        return errorMessage
+    return errorMessage
+
+
+def createTestbenchClock(filename, module):
+    clock = getClockName(filename, module)
+    clockInstantiation = ("\n\t// Clock setup"
+                          "\n\tparameter PERIOD = 100; // period = length of clock"
+                          "\n\tinitial begin"
+                          "\n\t\t" + clock + " <= 0;"
+                          "\n\t\tforever #(PERIOD/2) " + clock + " = ~" + clock + ";"
+                          "\n\tend\n")
+    return clockInstantiation
 
 
 # Returns dictionary with keys of every SystemVerilog module and their required submodules
@@ -200,10 +236,6 @@ def createLaunchModelSimFile():
         contents = "C:\intelFPGA\\17.0\modelsim_ase\win32aloem\modelsim.exe\n C:\intelFPGA_lite\\17.0\modelsim_ase\win32aloem\modelsim.exe"
         f.write(contents)
         f.close()
-
-
-#set_global_assignment -name CDF_FILE ProgramTheDE1_SoC.cdf
-#set_global_assignment -name SOURCE_FILE Launch_ModelSim.bat
 
 
 def addFileToProject(filename, type, target):
@@ -270,6 +302,8 @@ def createWaveFile(module):
     else:
         printSuccessMessage(filename)
         f = open(filename, "w")
+        # TODO: Insert logic to populate all variables in wave file
+        f.close()
 
 
 def createTestingSuite(filename):
@@ -283,18 +317,9 @@ def createTestingSuite(filename):
 def printScriptHeader():
     print(" ------------------------------------------------------------ ")
     print("|    Accelerated SystemVerilog Simulation by Allen Putich    |")
-    print("|       https://github.com/HalfDressed/VerilogScripts        |")
+    print("|      https://github.com/HalfDressed/SystemVerilogTools     |")
     print(" ------------------------------------------------------------ ")
 
-def createTestbenchClock():
-    clockInstantiation = ("\n\t// Set up the clock."
-                          "\n\tparameter PERIOD = 100; // period = length of clock"
-                          "\n\tinitial begin"
-                          "\n\t\tclk <= 0;"
-                          "\n\t\tforever #(PERIOD/2) clk = ~clk;"
-                          "\n\tend\n")
-
-    return clockInstantiation
 
 def createWorkFlowScripts():
     print ("Create workflow scripts:")
@@ -322,20 +347,18 @@ def printSuccessMessage(name):
     return printAndReturn(message)
 
 
-def printContributeMessage ():
-    print("Thanks for using this script :)")
+# MAIN ********************************************************************************
+if __name__ == '__main__':
+    printScriptHeader()
+    createWorkFlowScripts()
+    # Process all arguments given to script OR every .sv file in directory
+    if len(sys.argv) > 1:
+        for arg in range(len(sys.argv)):
+            if arg is not 0:
+                createTestingSuite(sys.argv[arg])
+    else:
+        for file in glob.glob('*.sv'):
+            createTestingSuite(file)
 
-
-#MAIN ------------------------------------------------------------------------
-printScriptHeader()
-createWorkFlowScripts()
-# Process all arguments given to script OR every .sv file in directory
-if (len(sys.argv) > 1):
-    for arg in range(len(sys.argv)):
-        if arg is not 0:
-            createTestingSuite(sys.argv[arg])
-else:
-    for file in glob.glob('*.sv'):
-        createTestingSuite(file)
-print("") # additional line for spacing
-input('Press ENTER to exit...')
+    print("") # additional line for spacing
+    input("Press ENTER to exit...")
