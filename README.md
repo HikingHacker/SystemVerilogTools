@@ -37,8 +37,21 @@ Terminal:
 1. python ./AccelerateSystemVerilogTesting [file1] [file2] .. (if no parameters given runs on *.sv files in directory)
 ```
 
-# Examples
-![alt text](https://i.imgur.com/ciBfiUf.png)
+# Example
+Directory Prescript:
+![alt text](https://i.imgur.com/rSe1bnu.png)
+
+Script Execution:
+![alt text](https://i.imgur.com/ECqw6vf.png)
+
+Directory Postscript:
+![alt text](https://i.imgur.com/3jQQS84.png)
+
+Example testbench:
+![alt text](https://i.imgur.com/e2H4vGM.png)
+
+Example runlab:
+![alt text](https://i.imgur.com/OV75BoJ.png)
 
 # TODO list
 1. Add automatic variable popluation to wave.do file
