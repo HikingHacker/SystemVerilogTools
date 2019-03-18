@@ -40,41 +40,26 @@ def getModuleDeclarations(filename):
                 words = line.split()
                 for index in range(len(words)):
                     if 'module' and not 'endmodule' in words[index]:
-                        module_name = words[index + 1]
-                        modules.append(re.sub('[();;]', '', module_name))
+                        moduleName = words[index + 1] # TODO: Improve module name location
+                        moduleName = re.sub('[();;]', '', moduleName)
+                        modules.append(moduleName)
                         break
     return list(set(modules))
-
-# Dictionary containing variable conversion between module and testbench domain
-parameterTestbenchConversion = {
-  "input": "",
-  "output": "",
-  "inout logic": "tri"
-}
 
 
 # Returns ports for FIRST module declared in file. Requires following format for correct processing.
 
 # module name (port1, port2...portn);
-# input/output/inout .....
+# input/output/inout NAME, NAME, ..;
+# ...
 # endmoule
-
-def getModulePorts(filename):
-    parameters = []
-    with open(filename, 'r') as f:
-        for line in f:
-            line = line.strip('\n,;:') + ";"
-            if 'endmodule' in line:
-                break
-            for variable in parameterTestbenchConversion.keys():
-                if variable in line:
-                    parameters.append((re.sub(variable, parameterTestbenchConversion[variable], line)).strip('\n'))
-    return list(parameters)
-
-
-# TODO: Returns ports for specific module in file with legal SystemVerilog Syntax.
 def getSpecificModulePorts(filename, module):
     parameters = []
+    parameterTestbenchConversion = {
+        "input": "",
+        "output": "",
+        "inout logic": "tri"
+    }
     withinModule = False
     with open(filename, 'r') as f:
         for line in f:
@@ -91,12 +76,12 @@ def getSpecificModulePorts(filename, module):
 
 
 # Returns all submodules used in file that are declared in current directory
-def getModuleExplictSubmodules(filename, module_list):
+def getModuleExplictSubmodules(filename, moduleList):
     submodules = []
     with open(filename, 'r') as file:
         for line in file:
             for word in line.split():
-                if word in module_list:
+                if word in moduleList:
                     submodules.append(word)
     return list(set(submodules))
 
@@ -121,6 +106,10 @@ def getAllModulesInCurrentDirectory():
     return declarations
 
 
+def hasFile(filename):
+    return os.path.isfile(filename)
+
+
 def hasTestbench(filename, module):
     testbenchName = module + "_testbench()"
     with open(filename, 'r') as f:
@@ -130,17 +119,15 @@ def hasTestbench(filename, module):
     return False
 
 
-# add matching clk functionality
 def createTestbench(filename, module):
-    getClockName(filename, module)
     if hasTestbench(filename, module):
         printErrorMessage(module + "_testbench")
     else:
         printSuccessMessage(module + "_testbench")
-        f = open(filename, "a+")
+        f = open(filename, "a+") # TODO: only use 1 f.write()
         f.write("\n\n")
         f.write("/*\n") # commented to prevent conflicts
-        f.write("module " + module + "_testbench(); // Required name for runlab script\n")
+        f.write("module " + module + "_testbench();\n")
         for parameter in getSpecificModulePorts(filename, module):
             f.write("\t" + parameter.strip() + "\n")
         f.write(createTestbenchClock(filename, module))
@@ -156,7 +143,7 @@ def createTestbench(filename, module):
 
 
 # Finds first clock uses in module
-commonClocks = ["clock", "clk", "CLOCK_50"]
+acceptableClocks = ["clock", "clk", "CLOCK_50"]
 def getClockName (filename, module):
     errorMessage = "CLOCK_NOT_FOUND"
     with open(filename, 'r') as f:
@@ -166,8 +153,8 @@ def getClockName (filename, module):
                 withinModule = True
             if withinModule:
                 for word in line.split():
-                    word = word.strip('\n,;:')
-                    for clock in commonClocks:
+                    word = word.strip('\n,;: ')
+                    for clock in acceptableClocks:
                         if word.lower() == clock.lower():
                             return word
                     if word == 'endmodule':
@@ -177,7 +164,7 @@ def getClockName (filename, module):
 
 def createTestbenchClock(filename, module):
     clock = getClockName(filename, module)
-    clockInstantiation = ("\n\t// Clock setup"
+    clockInstantiation = ("\n\t// Clock generation"
                           "\n\tparameter PERIOD = 100; // period = length of clock"
                           "\n\tinitial begin"
                           "\n\t\t" + clock + " <= 0;"
@@ -193,10 +180,6 @@ def createModuleDictionary():
     for filename in glob.glob('*.sv'):
         modules_with_submodules[getFileNameWithoutExtension(filename)] = getModuleExplictSubmodules(filename, module_list)
     return modules_with_submodules
-
-
-def hasFile(filename):
-    return os.path.isfile(filename)
 
 
 def createProgramDE1SoCFile():
@@ -229,9 +212,9 @@ def createProgramDE1SoCFile():
 def createLaunchModelSimFile():
     filename = "Launch_ModelSim.bat"
     if hasFile(filename):
-        printErrorMessage("Launch_ModelSim.bat")
+        printErrorMessage(filename)
     else:
-        printSuccessMessage("Launch_ModelSim.bat (ensure correct installation path)")
+        printSuccessMessage(filename + " (ensure correct installation path)")
         f = open(filename, "w")
         contents = "C:\intelFPGA\\17.0\modelsim_ase\win32aloem\modelsim.exe\n C:\intelFPGA_lite\\17.0\modelsim_ase\win32aloem\modelsim.exe"
         f.write(contents)
@@ -261,7 +244,8 @@ def createRunlabFile(module):
         f = open(filename, "w")
         submodules = getModuleImplictSubmodules(module + ".sv")
         vlog = createRunlabFileVlogs(submodules)
-        f.write("# File generated using scripted created by Allen Putich."
+        contents = (
+                "# File generated using scripted created by Allen Putich."
                 "# "
                 "# Runlab format was adopted from Scott Hauck UW EE 271 course files.\n"
                 "# Create work library\n"
@@ -292,6 +276,7 @@ def createRunlabFile(module):
                 "\n"
                 "\n"
                 "# END")
+        f.write(contents)
         f.close()
 
 
@@ -322,7 +307,7 @@ def printScriptHeader():
 
 
 def createWorkFlowScripts():
-    print ("Create workflow scripts:")
+    print("Create workflow scripts:")
     createProgramDE1SoCFile()
     createLaunchModelSimFile()
 
@@ -360,5 +345,5 @@ if __name__ == '__main__':
         for file in glob.glob('*.sv'):
             createTestingSuite(file)
 
-    print("") # additional line for spacing
+    print("")  # additional line for spacing
     input("Press ENTER to exit...")
