@@ -7,7 +7,7 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 3. Run the script using one of the methods below.
 
 # Example
-Directory Prescript: 
+Directory Prescript: \n
 ![alt text](https://i.imgur.com/rSe1bnu.png)
 
 Script Execution: 
