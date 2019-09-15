@@ -7,19 +7,19 @@ These scripts accelerate the development of SystemVerilog modules by automating 
 3. Run the script using one of the methods below.
 
 # Example
-Directory Prescript:
+Directory Prescript: 
 ![alt text](https://i.imgur.com/rSe1bnu.png)
 
-Script Execution:
+Script Execution: 
 ![alt text](https://i.imgur.com/ECqw6vf.png)
 
-Directory Postscript:
+Directory Postscript: 
 ![alt text](https://i.imgur.com/3jQQS84.png)
 
-Example testbench:
+Example testbench: 
 ![alt text](https://i.imgur.com/e2H4vGM.png)
 
-Example runlab:
+Example runlab: 
 ![alt text](https://i.imgur.com/OV75BoJ.png)
 
 # Guidelines
